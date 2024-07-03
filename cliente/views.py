@@ -468,7 +468,7 @@ class Perfil(View):
 
     def post(self,request):
         if request.user.is_authenticated:
-            username=str(request.POST.get("username")).strip().lower()
+            username=str(request.POST.get("username")).strip()
             u=User.objects.get(id=request.user.id)
             m=None
             if User.objects.filter(username=username).exists():
