@@ -255,7 +255,7 @@ class Index(View):
             elif opc=="registrar_empleado":
                 nombre=str(request.POST.get("nombre")).strip().title()
                 apellidos=str(request.POST.get("apellidos")).strip().title()
-                username=str(request.POST.get("username")).strip().lower()
+                username=str(request.POST.get("username")).strip()
                 email=str(request.POST.get("email")).strip()
                 password1=request.POST.get("password1")
                 password2=request.POST.get("password2")
@@ -379,7 +379,7 @@ class Index(View):
                         me=models.Usuario.objects.get(cliente_bool=False,id=id)
                         nombre=str(request.POST.get("nombre")).strip().title()
                         apellidos=str(request.POST.get("apellidos")).strip().title()
-                        username=str(request.POST.get("username")).strip().lower()
+                        username=str(request.POST.get("username")).strip()
                         if "" in [nombre,apellidos,username]:
                             return render(request,"panel/Almacenero/modificar/modificar_empleado.html",{
                                 "empleado":me,
