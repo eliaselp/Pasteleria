@@ -1,0 +1,315 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Life Yalebis</title>
+        <link rel="icon" href="{% static 'img/logo.jpg'%}" type="image/png">                
+        <!-- Incluir CSS de Bootstrap desde la carpeta estática -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+        <style>
+            body::after {
+                content: "";
+                background: url("{% static 'img/fondo.jpg'%}");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                -webkit-filter: blur(4px); /* Si estás utilizando Safari 6.0 - 9.0 */
+                filter: blur(4px); /* Para navegadores modernos */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
+            
+            body {
+                background-color: rgba(250,200,200,0.6) !important;;
+                position: relative;
+            }
+            
+            .dropdown-menu .btn {
+                width: 100%;
+            }
+           
+            .navbar {
+                background-color: rgba(250,200,200,0.4) !important; 
+            } 
+
+            .ddown2:hover,
+            .btn-outline-light:hover {
+                color: #DB4AC7 !important;
+                background-color: #7B15A7 !important;
+                border-color: #7B15A7 !important;
+            }
+
+            .ddown3:hover{
+                color: #DB4AC7 !important;
+            }
+
+            .ddown2,
+            .ddown4,
+            .dropdown-menu,
+            .btn-outline-light {
+                color: #7B15A7 !important;
+                background-color: #CD8FC2 !important;
+                border-color: #7B15A7 !important;
+            }
+            <!-- ibvisafvbslkfbvgsdrilgb -->
+            body::after {
+                content: "";
+                background: url("{% static 'img/fondo.jpg'%}");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                -webkit-filter: blur(4px);
+                filter: blur(4px);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
+
+            body {
+                background-color: white;
+                position: relative;
+            }
+
+            /* Estilos responsivos para dispositivos móviles */
+            @media (max-width: 768px) {
+                .navbar {
+                    background-color: rgba(250,200,200,0.9) !important;
+                }
+
+                .dropdown-menu .btn,
+                .btn-outline-light {
+                    width: auto; /* Ajuste para botones en menú desplegable */
+                }
+            }
+
+            /* Estilos para pantallas medianas y grandes */
+            @media (min-width: 769px) {
+                .navbar {
+                    background-color: rgba(250,200,200,0.4) !important;
+                }
+
+                .ddown2:hover,
+                .btn-outline-light:hover {
+                    color: #DB4AC7 !important;
+                    background-color: #7B15A7 !important;
+                    border-color: #7B15A7 !important;
+                }
+
+                .ddown3:hover {
+                    color: #DB4AC7 !important;
+                }
+
+                .ddown2,
+                .ddown4,
+                .dropdown-menu,
+                .btn-outline-light {
+                    color: #7B15A7 !important;
+                    background-color: #CD8FC2 !important;
+                    border-color: #7B15A7 !important;
+                }
+            }
+        </style>
+    </head>
+    <body class="vh-100">
+        <nav class="navbar navbar-expand-lg  shadow-lg w-100 "  >
+            <div class="container-fluid d-flex justify-content-between w-100">
+                <!-- Nombre del sitio a la izquierda -->
+                <a class="navbar-brand fs-2 mx-3" href="../../../../../../../../" style="color: #7B15A7; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 1.5rem; font-weight: bold;">
+                    My Life Yalebis
+                </a>
+                <form action="../../../../" method="POST" id="form_nav">
+                    {% csrf_token %}
+                    <input required type="hidden" name="opc" id="opc_nav" value="">
+                </form>
+                <!-- Botón de alternancia para pantallas pequeñas -->
+                <div class="d-flex justify-content-end">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Elementos del navbar -->
+                    <div class="collapse navbar-collapse justify-content-end px-4" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item my-4 me-5 px-5" id="btn_get_registro">
+                                {% if not request.user.is_authenticated %}
+                                    <!-- Boton Modal Registro-->
+                                    <button type="button" class="btn btn-outline-light w-100 fs-5 text-start pl-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#ModalRegistro"id="btn_get_registro"  >
+                                        Registro
+                                    </button>
+                                    <!-- Modal Registro-->
+                                    <div class="modal fade" id="ModalRegistro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Registrar</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="../../../../../../registro/" method="POST" id="form_registrar_usuario">
+                                                        {% csrf_token %}
+                                                        <input required type="hidden" name="opc" value="registrar_usuario">
+                                                        <div class="mb-3">
+                                                            <label for="nombre" class="form-label fs-5">Nombres</label>
+                                                            <input required value="{{back_register.nombre}}" type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombres">
+                                                        </div>
+                                                
+                                                        <div class="mb-3">
+                                                            <label for="apellidos" class="form-label fs-5">Apellidos</label>
+                                                            <input required value="{{back_register.apellido}}" type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="username" class="form-label fs-5">Nombre de usuario</label>
+                                                            <input required value="{{back_register.username}}" type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label fs-5">Correo</label>
+                                                            <input required value="{{back_register.email}}" type="email" class="form-control" id="email" name="email" placeholder="Correo">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="direccion" class="form-label fs-5">Direccion</label>
+                                                            <input required value="{{back_register.direccion}}" type="text" class="form-control" id="direccion" name="direccion" placeholder="Direccion">
+                                                        </div>                                                
+                                                        <div class="mb-3">
+                                                            <label for="password1" class="form-label fs-5">Contraseña</label>
+                                                            <input required value="{{back_register.password1}}" value="{{back.password1}}" name="password1" type="password" class="form-control" id="password1" placeholder="Ingresa tu contraseña">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="password2" class="form-label fs-5">Repetir Contraseña</label>
+                                                            <input required value="{{back_register.password2}}" name="password2" type="password" class="form-control" id="password2" placeholder="Repetir contraseña">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-outline-light" >Registrar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--Boton del modal de iniciar Sesion-->
+                                <li class="nav-item my-md-4 me-5 px-5" id="btn_get_iniciar_sesion">
+                                    <button type="button" class="btn btn-outline-light w-100 fs-5 text-start pl-3 d-flex align-items-center gap-2 " data-bs-toggle="modal" data-bs-target="#ModalIniciarSesion">
+                                        Iniciar Sesion
+                                    </button>
+                                    <!--Modal del Iniciar Sesion-->
+                                    <div class="modal fade" id="ModalIniciarSesion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Iniciar Sesion</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="../../../../login/" method="POST" id="form_iniciar_sesion_client">
+                                                        {% csrf_token %}
+                                                        <input required type="hidden" name="opc" value="iniciar_sesion">
+                                                        <div class="mb-3">
+                                                            <label for="username" class="form-label fs-5">Nombre de usuario</label>
+                                                            <input required value="{{back.username}}" type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="password1" class="form-label fs-5">Contraseña</label>
+                                                            <input required value="{{back.password}}" name="password" type="password" class="form-control" placeholder="Ingresa tu contraseña">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="button" class="btn btn-outline-light" id="btn_login_client">Aceptar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% else %}
+                                <!--Dropdawn-->
+                                <li class="nav-item dropdown px-5 py-3">
+                                    <div class="pr-5">
+                                        <button class="nav-link dropdown-toggle fs-3 px-4 btn-outline-light ddown3 " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style=" font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                            {{request.user}}
+                                        </button>
+                                    <div>
+                                    <ul class="dropdown-menu ddown4" aria-labelledby="dropdownMenuLink">
+                                        <li>
+                                            <a class="dropdown-item ddown2" href="../../../../carrito/">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-cart4" viewBox="0 0 16 16">
+                                                    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0"/>
+                                                </svg>
+                                                Carrito
+                                                {% if cant_prod_car %}
+                                                    <!--Codigo de la bolita de notificaciones roja-->
+                                                    <span class="position-absolute top-3 start-100 translate-middle badge rounded-pill bg-danger">
+                                                        {{cant_prod_car}}
+                                                        <span class="visually-hidden">Compras pendientes</span>
+                                                    </span>
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item ddown2" href="../../../../perfil/">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                                </svg>
+                                                Perfil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item ddown2" href="../../../../compras/">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0"/>
+                                                </svg>
+                                                Compras
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="../../../../logout/" class="dropdown-item ddown2" type="submit">
+                                                <svg id="btn_cerrar_sesion_client" xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                                                    <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+                                                </svg>
+                                                Cerrar Sesion
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <main role="main" class="col-12 px-4 h-100">
+                <!-- Contenido principal aquí -->
+                {% block contenido %}
+                {% endblock  %}
+            </main>
+        </div>
+
+        <script>
+            {% if Alerta %}
+                alert("{{Alerta}}")
+            {% endif %}
+        </script>
+        <script src="{% static 'js/jquery-3.7.1.slim.min.js' %}"></script>
+        <script src="{% static 'js/popper.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/index.js' %}"></script>
+    </body>
+</html>
+
+
+
+
+

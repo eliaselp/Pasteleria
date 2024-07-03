@@ -1,0 +1,92 @@
+{% extends "client/home.html" %}
+{% load static %}
+{% block contenido%}
+<style>
+        
+    /* Estilo base para asegurar que el contenido no se superponga con el navbar */
+    .content {
+        padding-top: 70px; /* Ajusta este valor al tamaño inicial de tu navbar */
+    }
+
+    /* Media queries para ajustar el padding-top según el tamaño de la pantalla */
+    @media (max-width: 991px) { /* Para pantallas medianas */
+        .content {
+            padding-top: 60px; /* Ajusta este valor al tamaño de tu navbar en pantallas medianas */
+        }
+    }
+
+    @media (max-width: 767px) { /* Para pantallas pequeñas */
+        .content {
+            padding-top: 50px; /* Ajusta este valor al tamaño de tu navbar en pantallas pequeñas */
+        }
+    }
+</style>
+<div class="content overflow-y-auto">
+    <div class="d-flex justify-content-center align-items-center h-100 w-100 mt_custom">
+        <form action="" method="POST" id="form_cuerpo">
+            {% csrf_token %}
+            <input type="hidden" name="opc" id="opc_cuerpo" value="">
+            <div class="container">
+                {% if tamanio > 0 %}
+                    <form action="../../../../../../catalogo/" method="POST">
+                        {% csrf_token %}
+                        <div class="d-md-flex my-5 py-3">
+                            <input name="busqueda" class="form-control mt-3" type="search" placeholder="Buscar Productos" aria-label="Search">
+                            <button type="submit" class="btn btn-outline-light mx-auto w-50 mx-auto mt-3 fs-5 text-start pl-3" >
+                                Buscar
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+                <div class="row justify-content-center">
+                    {% if tamanio > 0 %}
+                        {% for pp in productos %}
+                            <div class="{% if tamanio == 1 %} col-lg-12 col-md-12 {% elif tamanio == 2%} col-lg-6 col-md-6 {% else %} col-lg-4 col-md-6 {% endif %} col-lg-4 col-md-6 mb-4 shadow-sm">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="{{pp.urlimagen}}" class="card-img-top img-fluid" alt="{{pp.nombre}}" style="object-fit: cover; height: 200px;">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-around">
+                                            <h5 class="card-title">{{pp.nombre}}</h5>
+                                            <h4>{{pp.precio}} $</h4>
+                                        </div>
+                                        {% if request.user.is_authenticated %}
+                                            <a type="button" href="../../../../../agregar_carrito/{{pp.id}}" class="btn btn-outline-light w-100 mt-4 fs-5 text-start pl-3 d-flex align-items-center gap-2" >
+                                                Comprar!!!
+                                            </a>
+                                        {% else %}
+                                            <a type="button" class="btn btn-outline-light w-100 mt-4 fs-5 text-start pl-3 d-flex align-items-center gap-2" 
+                                            data-bs-toggle="modal" data-bs-target="#ModalIniciarSesion">
+                                                Comprar!!!
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% if busqueda %}
+                            <div class="col-lg-12 col-md-12 mb-4 shadow-sm">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="{% static 'img/404.jpg' %}" class="card-img-top img-fluid" alt="cookies" style="object-fit: cover; height: 200px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Dulce no encontrado</h5>
+                                    </div>
+                                </div>
+                            </div>        
+                        {% else %}
+                            <div class="col-lg-12 col-md-12 mb-4 shadow-sm">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="{% static 'img/cerrado.jpg' %}" class="card-img-top img-fluid" alt="cookies" style="object-fit: cover; height: 200px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">CERRADO</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}        
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>    
+</div>
+{% endblock  %}

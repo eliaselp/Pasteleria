@@ -1,0 +1,50 @@
+.sidebar-sticky {
+    align-items: center; /* Centra los elementos verticalmente */
+    padding-top: 10%; /* Aumenta el espacio en la parte superior */
+}
+
+.nav-item:not(:last-child) {
+    margin-bottom: 1.5rem; /* Aumenta la separación entre botones */
+}
+
+/* Opcional: Añade una transición suave para los botones al pasar el mouse */
+.btn-outline-primary {
+    transition: transform 0.3s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+    transform: scale(1.05);
+}
+/* CSS para cambiar el color de la sombra al hacer clic */
+.form-control:focus, .btn:focus {
+    box-shadow: 0 0 0 0.25rem  #CD8FC2; /* Cambia el color RGB y la opacidad a tu gusto */
+  }
+.fecha{
+    margin-right: 50px;
+  }
+
+  /* Color cuando el acordeón está abierto */
+.accordion-button:not(.collapsed) {
+    box-shadow: 0 0 0 0.25rem #CD8FC2;
+    background-color: #ffffff;
+  }
+  
+  /* Color cuando el botón está enfocado */
+  .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem  #CD8FC2;
+    background-color: #ffffff;
+  }
+  
+  .btn-outline-success:focus{
+    box-shadow: 0 0 0 0.25rem  greenyellow;
+    
+  }
+  .btn-outline-danger:focus{
+    box-shadow: 0 0 0 0.25rem  red;
+    
+  }
+  .bg_custom{
+    background-color: #CD8FC2;
+  }
+  
+  

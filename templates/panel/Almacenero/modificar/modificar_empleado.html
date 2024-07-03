@@ -1,0 +1,28 @@
+{% extends "panel/Almacenero/almacenero.html" %}
+
+{% block contenido %}
+    <div class="text-center shadow-sm w-100">
+        <h2 style="color: #7B15A7 !important;" class="mt-5">Modificar Empleado</h2>    
+    </div>
+    <form action="" method="POST" class="mt-5 w-50" id="form_modificar_empleado">
+        {% csrf_token %}
+        <input type="hidden" name="opc" value="modificar_empleado">
+        <input type="hidden" name="id" value="{{empleado.id}}">
+        <div class="mb-3">
+            <label for="nombre" class="form-label fs-5">Nombres</label>
+            <input value="{{empleado.nombres}}" type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombres">
+        </div>
+        <div class="mb-3">
+            <label for="apellidos" class="form-label fs-5">Apellidos</label>
+            <input value="{{empleado.apellidos}}" type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos">
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label fs-5">Nombre de usuario</label>
+            <input value="{{empleado.userid.username}}" type="text" class="form-control" id="username" name="username" placeholder="Nombre de usuario">
+        </div>
+        <div class="w-100 d-flex gap-3  ">
+            <button type="button" class="btn btn-outline-danger w-50" id="btn_cancelar_modificar_empleado">Cancelar</button>
+            <button type="submit" class="btn btn-outline-light w-50">Actualizar</button>
+        </div>
+    </form>
+{% endblock %}

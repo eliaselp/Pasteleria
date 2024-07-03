@@ -1,0 +1,144 @@
+{% extends "panel/Almacenero/almacenero.html" %}
+{% load static %}
+{% block contenido%}
+<div class="content overflow-y-auto">
+    {% if not informes %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="p-5 my-3 bg-white shadow rounded-3">
+                        NO HAY INFORMES REALIZADOS
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% for ii in informes %}
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="p-5 my-3 bg-white shadow rounded-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="{% if ii.informe.estado == 0 %}yellow{% elif ii.informe.estado == 1 %}green{% else %}red{% endif %}"
+                            class="bi bi-circle-fill float-end mb-2" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8"/>
+                            </svg>
+                            <div class="accordion accordion-flush mt-2" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsetwo" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <div class="mx-3">
+                                            <h6 class="h2 fs-5 ">Fecha: </h6><p>{{ii.informe.fecha}}</p>
+                                        </div>
+                                        <div class="mx-3">
+                                            <h6 class="h2 fs-5 ">Importe: </h6><p>{{ii.total}} $</p>
+                                        </div>
+                                        {% if ii.informe.perdida %}
+                                            <div class="mx-3">
+                                                <h6 class="h2 fs-5 ">Pérdida: </h6><p>{{ii.informe.perdida}} $</p>
+                                            </div>
+                                        {% endif %}
+                                    </button>
+                                </h2>
+                                <div id="flush-collapsetwo" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <div class="w-100 text-center d-flex flex-column justify-content-start h-100">
+                                            <div class="w-100 py-4 shadow-sm">
+                                                <h2 class="h2 fs-2">Productos</h2>    
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead class="table-dark">
+                                                    <tr>
+                                                        <th scope="col">Producto</th>
+                                                        <th scope="col">Resto</th>
+                                                        <th scope="col">Vendido</th>
+                                                        <th scope="col">Precio</th>
+                                                        <th scope="col">Subtotal</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for prd in ii.detalles %}
+                                                            <tr>
+                                                                <td>{{prd.detalle.productoid.nombre}}</td>
+                                                                <td>{{prd.detalle.resto}}</td>
+                                                                <td>{{prd.detalle.diferencia}}</td>
+                                                                <td>${{prd.detalle.productoid.precio}}</td>
+                                                                <td>{{prd.subtotal}}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                {% if ii.informe.estado == 0 %}
+                                                    <div class=" d-flex gap-2">
+                                                        <a class="btn btn-outline-danger w-50"
+                                                        data-bs-toggle="modal" data-bs-target="#denegar_informe{{ii.informe.id}}">
+                                                            Denegar
+                                                        </a>
+                                                        <div class="modal fade" id="denegar_informe{{ii.informe.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-sm">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Denegar Informe</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Desea Denegar este informe ? 
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                                        <form action="../../../../../../../../admin/informe/0" method="POST">
+                                                                            {% csrf_token %}
+                                                                            <input type="hidden" name="id" value="{{ii.informe.id}}">
+                                                                            <button type="submit" class="btn btn-primary">Si</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a class="btn btn-outline-success w-50"
+                                                        data-bs-toggle="modal" data-bs-target="#aprobar_informe{{ii.informe.id}}">
+                                                            Aprobar
+                                                        </a>
+                                                        <div class="modal fade" id="aprobar_informe{{ii.informe.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-sm">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Aprobar Informe</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>Desea Aprobar este informe ?</p>
+                                                                        <p>Inserte el monto de perdida si existe:</p>
+                                                                        <form action="../../../../../../../../admin/informe/1" method="POST">
+                                                                            {% csrf_token %}
+                                                                            <input type="hidden" name="id" value="{{ii.informe.id}}">
+                                                                            <div class="input-group mb-3">
+                                                                                <span class="input-group-text" id="inputGroup-sizing-default">Monto de Pérdida</span>
+                                                                                <input type="text" class="form-control" id="perdida" name="perdida" value="{{back.precio}}" pattern="^(0*\.0*[1-9]\d*|0*[1-9]\d*(\.\d+)?)$" title="Por favor, introduce un número decimal válido. Ejemplo: 100, 100.00, 99.99">
+                                                                            </div>
+                                                                            <div class="modal-footer mt-4">
+                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>                                                                        
+                                                                                <button type="submit" class="btn btn-primary">Si</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>    
+ 
+{% endblock  %}

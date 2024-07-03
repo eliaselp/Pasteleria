@@ -1,0 +1,86 @@
+{% extends "panel/Almacenero/almacenero.html" %}
+
+{% block contenido %}
+    <style>
+        .icon-column {
+            width: 32px; /* Tamaño fijo de ancho */
+            height: 32px; /* Tamaño fijo de alto */
+            max-width: 32px; /* Máximo tamaño de ancho */
+            max-height: 32px; /* Máximo tamaño de alto */
+            min-width: 32px; /* Mínimo tamaño de ancho */
+            min-height: 32px; /* Mínimo tamaño de alto */
+        }        
+        .icon-column {
+            width: 100%; /* O un tamaño fijo que prefieras */
+            height: auto; /* Mantiene la proporción del SVG */
+            max-width: 100px; /* El tamaño máximo que deseas que tenga el icono */
+        }
+        @media (max-width: 320px) {
+            .icon-column {
+                width: 32px; /* Tamaño fijo de ancho */
+                height: 32px; /* Tamaño fijo de alto */
+                max-width: 32px; /* Máximo tamaño de ancho */
+                max-height: 32px; /* Máximo tamaño de alto */
+                min-width: 32px; /* Mínimo tamaño de ancho */
+                min-height: 32px; /* Mínimo tamaño de alto */
+            }
+        }
+             
+        
+    </style>
+    <div class="content overflow-y-auto">
+        <div class="text-center py-4 shadow-sm w-100">
+            <h2 style="color: #7B15A7 !important;" class="">Modificar Producto</h2>    
+        </div>
+        <form action="" method="POST" class="mt-5" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input required type="hidden" name="opc" value="modificar_producto">
+            <input required type="hidden" name="productoid" value="{{vv.id}}">
+            <div class="container d-flex flex-column w-100">
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input required type="text" class="form-control" id="nombre" name="nombre" value="{{vv.nombre}}">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input required type="number" class="form-control" id="cantidad" name="cantidad" value="{{vv.cantidad_Almacen}}">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="peso" class="form-label">Peso (kg)</label>
+                        <input required type="text" class="form-control" id="peso" name="peso" value="{{vv.peso}}" pattern="^\d*(\.\d+)?$" title="Por favor, introduce un número decimal válido. Ejemplo: 10, 10.5, 0.75">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="precio" class="form-label">Precio ($)</label>
+                        <input required type="text" class="form-control" id="precio" name="precio" value="{{vv.precio}}" pattern="^\d*(\.\d+)?$" title="Por favor, introduce un número decimal válido. Ejemplo: 100, 100.00, 99.99">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option {% if vv.categoriaid.categoria == "" %} selected {% endif %} value="">Elige una categoria</option>
+                            {% for cc in categorias %}
+                                <option value="{{cc.categoria}}" {% if vv.categoriaid.categoria == cc.categoria %} selected {% endif %}>{{cc.categoria}}</option>
+                            {% endfor %}
+                            <option value="otra" {% if vv.categoria == "Otra" %} selected {% endif %}>Agregar nueva Categoria</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 mb-3 d-none" id="otra_categoria">
+                        <label for="otra_cat" class="form-label">Otra Categoría</label>
+                        <input type="text" class="form-control" name="otra_categoria" placeholder="Inserte nueva categoria" value="">
+                    </div>
+                    <div class="col-12 col-md-6 mb-3 mt-4">
+                        <div class="input-group mt-2">
+                            <label class="input-group-text" for="inputGroupFile01">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
+                                    <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>
+                                    <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                                </svg>
+                            </label>
+                            <input name="imagen_producto" type="file" class="form-control" id="inputGroupFile01" accept="image/*" aria-describedby="inputGroupFileAddon01" aria-label="Upload">
+                        </div>
+                    </div>                
+                <button type="submit" class="btn btn-outline-light w-100 mt-5">Actualizar</button>
+            </div>
+        </form>
+    </form>
+{% endblock %}

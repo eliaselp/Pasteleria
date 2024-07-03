@@ -1,0 +1,40 @@
+{% extends "panel/Mostrador/mostrador.html" %}
+
+{% block contenido %}
+    <div class="w-100 text-center d-flex flex-column justify-content-start h-100">
+        <div class="w-100 py-4 shadow-sm">
+            <h2 class="h2 fs-2">Gestionar Inventario de Mostrador</h2>    
+        </div>
+        <div class="table-responsive">    
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Peso</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pp in productos %}
+                        <tr>
+                            <th scope="row">{{pp.id}}</th>
+                            <td>{{pp.nombre}}</td>
+                            <td>{{pp.categoriaid.categoria}}</td>
+                            <td>{{pp.cantidad_Mostrador}}</td>
+                            <td>{{pp.peso}}</td>
+                            <td>{{pp.precio}} $</td>
+                        </tr>
+                    {% endfor %}
+                    {% if not productos %}
+                        <tr class="bg-light">
+                            <td colspan="6" class="fs-4">No hay productos disponibles</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock  %}

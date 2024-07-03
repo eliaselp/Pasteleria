@@ -1,0 +1,130 @@
+{% extends "client/base.html" %}
+
+{% block contenido%}
+<div class="w-100 text-center d-flex flex-column justify-content-start h-100">
+    <div class="w-100 py-4 shadow-sm">
+        <h2 class="h2 fs-2" style="color: #7B15A7;">Carrito</h2>    
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col" style="min-width:100px" ></th>
+            </tr>
+            </thead>
+            <tbody>
+                {% if cant_prod_car > 0 %}
+                    {% for pc in carrito  %}
+                        <tr class="bg-light">
+                            <td>{{pc.productoid.nombre}}</td>
+                            <td>{{pc.productoid.categoriaid.categoria}}</td>
+                            <td>${{pc.productoid.precio}}</td>
+                            <td>{{pc.cantidad}}</td>
+                            <td class="icon-column d-flex gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square mx-auto w-50" data-bs-toggle="modal" data-bs-target="#Mod_cantidad{{pc.id}}"viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                                <!--Modal de Modificar Cantidad-->
+                                <div class="modal fade" id="Mod_cantidad{{pc.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Seleccione Cantidad</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="../../../../../set_carrito/{{pc.id}}/" method="POST" id="mod_cantidad">
+                                                    {% csrf_token %}
+                                                    <div class="mb-3">
+                                                        <label class="form-label fs-5">Inserte la cantidad</label>
+                                                        <input type="number" class="form-control" name="cantidad" placeholder="1 - {{pc.productoid.cantidad_Mostrador}}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-outline-light">Aceptar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash3 mx-auto w-50" data-bs-toggle="modal" data-bs-target="#eliminar_carrito{{pc.id}}" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                </svg>
+                                <!-- Modal -->
+                                <div class="modal fade" id="eliminar_carrito{{pc.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+                                    <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Quiar del carrito</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Desea quitar del carrito el producto: {{pc.productoid.nombre}}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <form action="../../../../../../quitar_carrito/{{pc.id}}" method="">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-primary">Si</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                        <tr>
+                            <td colspan="3" class="fs-4">
+                                Total
+                            </td>
+                            <td class="fs-4">
+                                $ {{total}}
+                            </td>
+                            <td class="bg-light">
+                                <button type="button" class="btn btn-outline-light w-100 fs-5 text-start pl-3 d-flex align-items-center gap-2 "
+                                data-bs-toggle="modal" data-bs-target="#confirmar_compra">
+                                    Comprar
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="confirmar_compra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmar compra</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Precione si para confirmar la compra.
+                                                Si ocurre algun error enla compra, el producto se quedara en el carrito.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <form action="../../../../../../efectuar_compra/" method="GET">
+                                                    <button type="submit" class="btn btn-primary">Si</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="fs-4">
+                            No Hay productos en el carrito
+                        </td>
+                    </tr>
+                {% endif %} 
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock  %}

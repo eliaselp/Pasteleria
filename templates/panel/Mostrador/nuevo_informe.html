@@ -1,0 +1,54 @@
+{% extends "panel/Mostrador/mostrador.html" %}
+
+{% block contenido %}
+    <div class="w-100 text-center d-flex flex-column justify-content-start h-100">
+        <div class="w-100 py-4 shadow-sm">
+            <h2 class="h2 fs-2">Generar Nuevo Informe</h2>    
+        </div>
+        <div class="table-responsive">    
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Excedente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form action="../../../../../../../../admin/nuevo_informe/" method="POST">
+                        {% csrf_token %}
+                        {% for pp in productos %}
+                            <tr class="bg-light">
+                                <td>{{pp.nombre}}</td>
+                                <td>{{pp.categoriaid.categoria}}</td>
+                                <td>{{pp.cantidad_Mostrador}}</td>
+                                <td>{{pp.precio}} $</td>
+                                <td>
+                                    <input type="number" class="form-control" aria-label="Sizing example input" 
+                                    aria-describedby="inputGroup-sizing-default" name="{{pp.id}}"
+                                    placeholder="0 - {{pp.cantidad_Mostrador}}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% if not productos %}
+                            <tr class="bg-light">
+                                <td colspan="5" class="fs-4">No hay productos disponibles</td>
+                            </tr>
+                        {% else %}
+                            <tr class="bg-light">
+                                <td colspan="5">
+                                    <button type="submit" 
+                                    class="btn btn-outline-primary w-75 fs-5 text-center pl-3">
+                                        Generar Informe
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </form>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock  %}

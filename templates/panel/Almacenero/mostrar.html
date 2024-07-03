@@ -1,0 +1,174 @@
+{% extends "panel/Almacenero/almacenero.html" %}
+{% block contenido %}
+    <style>
+        .modificar:hover{
+            fill:blue;
+        }
+        .eliminar:hover{
+            fill:red;
+        }
+        .caja_columna{
+            min-width:150px;
+        }
+    </style>
+    <form action="" method="POST" id="form_crud_producto">
+        {% csrf_token %}
+        <input type="hidden" name="opc" id="opc_crud_producto">
+        <input type="hidden" name="id" id="id_crud_producto">
+    </form>
+    <div class="w-100 text-center d-flex flex-column justify-content-start h-100">
+        <div class="w-100 py-4 shadow-sm">
+            <h2 class="h2 fs-2">Gestionar Inventario de {% if mostrador %}Mostrador{%else%}Almacén{%endif%}</h2>    
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Peso</th>
+                    <th scope="col">Precio</th>
+                    
+                    <th scope="col">
+                        {% if not  mostrador %}
+                            {% if productos %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-shop icon-column modificar" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5M4 15h3v-5H4zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm3 0h-2v3h2z"/>
+                                </svg>
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content text-dark">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title fs-3" id="staticBackdropLabel">Entrega al Mostrador</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="opc" value="entrega_mostrador">
+                                                    <label for="select_producto" class="form-label fs-4">Producto</label>
+                                                    <select name="productoid" id="select_producto" class="form-select" aria-label="Default select example">
+                                                        <option selected>Seleccione el producto</option>
+                                                        {% for cc in productos %}
+                                                            <option value="{{cc.id}}">{{cc.categoriaid.categoria}} - {{cc.nombre}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label for="cantidad" class="form-label fs-4 mt-3">Cantidad</label>
+                                                    <input required type="number" class="form-control" id="cantidad" name="cantidad" min="0" title="La cantidad debe ser un número positivo.">
+                                                    <div class="modal-footer mt-3">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% if productos %}
+                        {% for pp in productos %}
+                            <tr class="bg-light">
+                                <td>{{pp.nombre}}</td>
+                                <td>{{pp.categoriaid.categoria}}</td>
+                                {% if not  mostrador %}
+                                    <td>{{pp.cantidad_Almacen}}</td>
+                                {% else %}
+                                    <td>{{pp.cantidad_Mostrador}}</td>
+                                {% endif %}
+                                <td>{{pp.peso}}</td>
+                                <td>${{pp.precio}}</td>
+                                <td class="icon-column d-flex gap-2 caja_columna">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-image w-50 mx-auto modificar" viewBox="0 0 16 16" data-bs-toggle="modal" data-bs-target="#sdasidn{{pp.id}}">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                                    </svg>
+                                    {% if not mostrador %}   
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square mx-auto w-50 modificar" viewBox="0 0 16 16"
+                                            data-bs-toggle="modal" data-bs-target="#modificar_producto{{pp.id}}">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="modificar_producto{{pp.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Modificar</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Desea modificar el producto: {{pp.nombre}}
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                            <form action="" method="POST">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="opc" value="get_modificar_producto">
+                                                                <input type="hidden" name="id" value="{{pp.id}}">                                                            
+                                                                <button type="submit" class="btn btn-primary">Si</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash3 mx-auto w-50 eliminar" id={{pp.id}} viewBox="0 0 16 16"
+                                            data-bs-toggle="modal" data-bs-target="#eliminar_producto{{pp.id}}">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                            </svg>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="eliminar_producto{{pp.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-sm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Desea eliminar el producto: {{pp.nombre}}
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                        <form action="" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="opc" value="eliminar_producto">
+                                                            <input type="hidden" name="id" value="{{pp.id}}">                                                            
+                                                            <button type="submit" class="btn btn-primary">Si</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                    {% endif %}
+                                </td>                            
+                            </tr>
+                            <!-- Modal -->
+                            <div class="modal fade" id="sdasidn{{pp.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="{{pp.urlimagen}}" width="450px">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="bg-light">
+                            <td colspan="7" class="text-center text-black fs-4">No hay Productos Registrados</td>
+                        </tr>          
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

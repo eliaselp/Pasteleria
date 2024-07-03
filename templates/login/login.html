@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Iniciar Sesión - Gestión de Inventario</title>
+        <!-- Asegúrate de incluir el CSS de Bootstrap -->
+        <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+        <style>
+            /* Estilo adicional para centrar verticalmente */
+            html, body {
+              height: 100%;
+            }
+            body {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+        </style>
+        <style>
+            .container {
+              display: flex; /* Alinea los elementos horizontalmente */
+            }
+          
+            .checkmark {
+              width: 100px; /* Tamaño más grande */
+              height: 100px; /* Tamaño más grande */
+              border: 2px solid #000;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 10px;
+            }
+          
+            .checkmark::after {
+              content: '';
+              display: block;
+              width: 50px; /* Tamaño más grande */
+              height: 50px; /* Tamaño más grande */
+              border-left: 3px solid transparent; /* Línea más gruesa */
+              border-bottom: 3px solid transparent; /* Línea más gruesa */
+              transform: rotate(-45deg);
+              opacity: 0;
+              animation: draw-checkmark 0.5s ease-in-out 0s infinite;
+            }
+          
+            @keyframes draw-checkmark {
+                0% {
+                    border-left: 3px solid transparent;
+                    border-bottom: 3px solid transparent;
+                    opacity: 0;
+                }
+                50% {
+                    border-left: 3px solid #000;
+                    border-bottom: 3px solid #000;
+                    opacity: 1;
+                }
+                100% {
+                    border-left: 3px solid transparent;
+                    border-bottom: 3px solid transparent;
+                    opacity: 0;
+                }
+            }
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            main {
+                display: flex;
+                flex-direction: column;
+                justify-content: center; /* Centrado vertical */
+                align-items: center; /* Centrado horizontal */
+                height: 100%;
+            }
+            .container {
+                width: 50%; /* Ancho del contenedor */
+                display: flex; /* Alinea los elementos horizontalmente */
+                justify-content: space-around; /* Espaciado entre checkmarks */
+            }
+            .checkmark {
+                width: 100px;
+                height: 100px;
+                border: 2px solid #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .checkmark::after {
+                content: '';
+                display: block;
+                width: 50px;
+                height: 50px;
+                border-left: 3px solid transparent;
+                border-bottom: 3px solid transparent;
+                transform: rotate(-45deg);
+                opacity: 0;
+                animation: draw-checkmark 0.5s ease-in-out 0s infinite;
+            }
+            @keyframes draw-checkmark {
+                0% {
+                    border-left: 3px solid transparent;
+                    border-bottom: 3px solid transparent;
+                    opacity: 0;
+                }
+                50% {
+                    border-left: 3px solid #000;
+                    border-bottom: 3px solid #000;
+                    opacity: 1;
+                }
+                100% {
+                    border-left: 3px solid transparent;
+                    border-bottom: 3px solid transparent;
+                    opacity: 0;
+                }
+            }
+            body::after {
+                content: "";
+                background: url("{% static 'img/fondo.jpg'%}");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                -webkit-filter: blur(4px); /* Si estás utilizando Safari 6.0 - 9.0 */
+                filter: blur(4px); /* Para navegadores modernos */
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
+            
+            body {
+                background-color: white;
+                position: relative;
+            }
+            /* Estilos para pantallas grandes */
+            .checkmark {
+                width: 100px;
+                height: 100px;
+                /* otros estilos */
+            }
+            
+            .container {
+                width: 50%; /* Ancho por defecto para pantallas grandes */
+                /* otros estilos */
+            }
+            
+            .card {
+                /* otros estilos */
+            }
+            
+            /* Estilos para pantallas menores a 768px */
+            @media (max-width: 768px) {
+                .checkmark {
+                    width: 75px; /* Tamaño más pequeño */
+                    height: 75px; /* Tamaño más pequeño */
+                    /* Asegúrate de mantener la misma proporción para la animación */
+                    .checkmark::after {
+                        width: 100px;
+                        height: 100px; /* Tamaño más pequeño */
+                    }
+                }
+            
+                .container {
+                    width: 90%; /* Ancho más grande para pantallas pequeñas */
+                    margin: 0 auto; /* Centrado horizontal */
+                }
+                
+                .card {
+                    width: 100%; /* Ancho completo dentro del contenedor */
+                    margin: 0 auto; /* Centrado horizontal */
+                }
+            }
+            .header-color {
+                background-color: rgba(205, 143, 194, 0.7); /* Color de fondo para el header */
+            }
+            
+                .btn-outline-light:hover {
+                    color: #DB4AC7 !important;
+                    background-color: #7B15A7 !important;
+                    border-color: #7B15A7 !important;
+                }
+
+                .btn-outline-light {
+                    color: #7B15A7 !important;
+                    background-color: #CD8FC2 !important;
+                    border-color: #7B15A7 !important;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row d-flex flex-column w-100 justify-content-center">
+                <div class="container">
+                    <div class="checkmark"></div>
+                    <div class="checkmark"></div>
+                    <div class="checkmark"></div>
+                </div>
+                <div class="col mx-auto w-100">
+                    <div class="card w-100" >
+                        <div class="card-header header-color text-white"  >
+                            <h3 class="card-title" style="color: #7B15A7 !important;">Iniciar Sesión</h3>
+                        </div>
+                        <div class="card-body w-100">
+                            <form action="" method="POST">
+                                <input type="hidden" name="opc" value="login">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Usuario</label>
+                                    <input value="{{back.username}}" type="text" name="username" class="form-control" id="username" placeholder="Ingresa tu usuario">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <input value="{{back.password}}" name="password" type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña">
+                                </div>
+                                <button type="submit" class="btn btn-outline-light w-100">Acceder</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Asegúrate de incluir los JS de Bootstrap -->
+        <script src="{% static 'js/index.js' %}"></script>
+        <script src="{% static 'js/jquery-3.7.1.slim.min.js'%}"></script>
+        <script src="{% static 'js/popper.min.js'%}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
+        
+        <script>
+            {% if Alerta %}
+                alert("{{Alerta}}")
+            {% endif %}
+        </script>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+{% extends "client/base.html" %}
+
+{% block contenido%}
+    {% if not compras %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="p-5 my-3 bg-white shadow rounded-3">
+                        <p >No hay nada ahun</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {% for cp in compras %}
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="p-5 my-3 bg-white shadow rounded-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="{% if cp.compra.entregado == 1 %}green{% elif cp.compra.entregado == 0 %}yellow{% else %}red{% endif %}" class="bi bi-circle-fill float-end mb-2" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8"/>
+                            </svg>
+                            <div class="accordion accordion-flush mt-2" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsethree{{cp.id}}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            <div class="mx-3">
+                                                <h6 class="h2 fs-5 ">Fecha: </h6><p>{{cp.compra.fecha}}</p>
+                                            </div>
+                                            <div class="mx-3">
+                                                <h6 class="h2 fs-5 ">Importe: </h6><p>{{cp.total}} $</p>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapsethree{{cp.id}}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="w-100 text-center d-flex flex-column justify-content-start h-100">
+                                                <div class="w-100 py-4 shadow-sm">
+                                                    <h2 class="h2 fs-2">Productos</h2>    
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">Producto</th>
+                                                            <th scope="col">Cantidad</th>
+                                                            <th scope="col">Importe</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for pp in cp.detalles %}
+                                                                <tr>
+                                                                    <td>{{pp.lista.productoid.nombre}}</td>
+                                                                    <td>{{pp.lista.cantidad}}</td>
+                                                                    <td>{{pp.importe}}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <button type="button" class="btn btn-outline-light "  data-bs-toggle="modal" data-bs-target="#ModalCanjearCodigo{{cp.id}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                                                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                                                    </svg>
+                                                    Codigo Canjeo
+                                                </button>
+                                                <!--Modal del Codigo de compra-->
+                                                <div class="modal fade" id="ModalCanjearCodigo{{cp.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Codigo de Compra</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>{{cp.compra.codigo}}</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+                                                        
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+  
+  
+
+{% endblock  %}
