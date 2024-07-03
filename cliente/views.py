@@ -165,7 +165,7 @@ class Register(View):
         if not request.user.is_authenticated:
             nombre=str(request.POST.get("nombre")).strip().title()
             apellidos=str(request.POST.get("apellidos")).strip().title()
-            username=str(request.POST.get("username")).strip().lower()
+            username=str(request.POST.get("username")).strip()
             email=str(request.POST.get("email")).strip()
             direccion=str(request.POST.get("direccion")).strip()
             password1=request.POST.get("password1")
